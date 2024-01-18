@@ -66,8 +66,8 @@ contract NFTMarketplace is Ownable {
         Listing storage listing = lists[_tokenId];
         require(listing.active, "Listing is not active");
         require(_price >= listing.price, "Incorrect payment amount");
-        erc20Contract.transferFrom(msg.sender, listing.seller, _price);
-        nftContract.transferFrom(listing.seller, msg.sender, listing.tokenId);
+        erc20Contract.safeTransferFrom(msg.sender, listing.seller, _price);
+        nftContract.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
         listing.active = false;
 
         emit NFTSold(listing.tokenId, msg.sender, listing.price);
@@ -97,8 +97,8 @@ contract NFTMarketplace is Ownable {
         Listing storage listing = lists[_tokenId];
         require(listing.active, "Listing is not active");
         require(_price >= listing.price, "Incorrect payment amount");
-        erc20Contract.transferFrom(buyer, listing.seller, _price);
-        nftContract.transferFrom(listing.seller, buyer, listing.tokenId);
+        erc20Contract.safeTransferFrom(buyer, listing.seller, _price);
+        nftContract.safeTransferFrom(listing.seller, buyer, listing.tokenId);
         listing.active = false;
 
         emit NFTSold(listing.tokenId, buyer, listing.price);
