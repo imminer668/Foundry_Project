@@ -31,15 +31,17 @@ struct Listing {
             token.mint(buyerAddress,10000);
             //token.approve()
             nft = new MyNFT(admin);
+            //铸造了nft
             nft.safeMint(admin,'json');
             nft.safeMint(admin,'jsonjson');
 
         nftMarket = new NFTMarketplace(admin, address(token), address(nft));
+            //授权nft给nftMarket合约
             nft.approve(address(nftMarket), 0);
             nft.approve(address(nftMarket), 1);
         }
         vm.stopPrank();
-        //切换buyer身份授权 erc20 token给buyer
+        //切换buyer身份，授权erc20 token给nftMarket合约
         vm.startPrank(buyerAddress);
         {
         token.approve(address(nftMarket),10000);       
@@ -83,9 +85,10 @@ struct Listing {
     }
 
     function test_tokensReceived() public{
-        //拥有者list上架
+        
         vm.startPrank(admin);
         {
+        //拥有者list上架
         nftMarket.listNFT(1,100);   
         //nftMarket.getListByTokenID(0);     
         }
